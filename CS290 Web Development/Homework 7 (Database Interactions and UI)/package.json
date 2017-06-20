@@ -1,0 +1,18 @@
+{
+  "name": "workout-tracker",
+  "version": "1.0.0",
+  "description": "A simple workout tracker to practice using mySQL databases with node.js",
+  "main": "workoutTracker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chris_Merrill",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "express": "^4.13.2",
+    "express-handlebars": "^2.0.1",
+    "express-session": "^1.11.3",
+    "mysql": "^2.8.0"
+  }
+}

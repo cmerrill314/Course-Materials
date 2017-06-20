@@ -1,0 +1,103 @@
+/*
+	Name: Christopher Merrill
+	Course: CS290 Web Development
+	Date: 4/7/2017
+	
+	Description: This is the CSS code that will be used to style the page created in 
+	Content.html
+	
+	NOTE: Assignment requirements are labelled for easy grading. Unlabelled lines are 
+	used for formatting and design that wasn't required.
+*/
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: "Verdana", sans-serif;
+	background: #ffeed1;
+}
+
+.col-title {
+	font-weight: bold;          /*Requirement: Bold header cells*/
+	text-align: center;
+}
+
+.row-title {
+	font-style: italic;         /*Requirement: Italic header cells*/
+	text-align: center;
+}
+
+.outer-content {
+	left: 0px;                  /*Requirement: Align outer div to left side of page*/
+	width: 75%;                 /*Requirement: Outer div stretches 3/4 of page*/
+	margin-top: 20px;           /*Requirement: Outer has head room of 20px*/
+	background: #f441cd;        /*Requirement: Outer div background should be pink*/
+	padding: 20px;
+}
+
+.inner-content {
+	background: #00d4ff;        /*Requirement: Inner div background should be blue*/
+	width: 75%;                 /*Requirement: Inner div stretches 3/4 of outer div*/
+	text-align: center;         /*Requirement: Inner div is centered in outer div*/
+	margin: auto;
+	margin-top: auto;
+	margin-bottom: auto;
+	font-weight: bold;
+}
+
+h1 {
+	text-align: center;
+}
+
+p {
+	margin:0 0;
+}
+
+caption {
+	font-weight: bold;
+}
+
+table {
+	margin-left: 5px;
+	width: 75%;
+	text-align: center;
+	background: white;
+	border-collapse: collapse;
+	border: 2px solid black;
+}
+
+form {
+	width: 38%;
+	margin-bottom: 5px;
+	margin-left: 5px;
+	border: 2px solid black;
+	border-radius: 5px;
+	display: inline-block;
+	background: white;
+}
+
+input[type=text], input[type=number], input[type=password] {
+	width: 97%;
+	padding: 12px 20px;
+	margin: 8px 8px 0 7px;
+	box-sizing: border-box;
+	border-color: #00d4ff;
+}
+
+input[type=submit] {
+	color: white;
+    background-color: #f441cd;
+    border: none;
+    padding: 16px 32px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+/* Extra Credit: Non-header rows alternate colors */
+tr:nth-of-type(even), tr:nth-of-type(4), tr:nth-of-type(6) {
+	background: #f441cd;
+}
+
+tr:nth-of-type(3), tr:nth-of-type(5) {
+	background: #00d4ff;
+}

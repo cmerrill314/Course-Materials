@@ -1,0 +1,130 @@
+<!--
+Name: Christopher Merrill
+Course: CS290 Web Development
+Date: 4/7/2017
+	
+Description: Week 2 homework assignment. The purpose is to get familiar with HTML and CSS
+by creating a simple web page that contains the following: 6x6 table, 3 item list, a div 
+within a div, and two forms (of input type GET and POST)
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+	<!-- Link the CSS Sheet -->
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+	<body>
+		<!-- Requirement 1: 6x6 Table -->
+		<table border="1">
+			<caption>TO-DO LIST</caption>
+			<tr>
+				<td></td> 
+				<td class="col-title">Monday</td>
+				<td class="col-title">Tuesday</td>
+				<td class="col-title">Wednesday</td>
+				<td class="col-title">Thursday</td>
+				<td class="col-title">Friday</td>			
+			</tr>
+			<tr>
+				<td class="row-title">Item 1</td>
+				<td>Code</td>
+				<td>Code</td>
+				<td>Code</td>
+				<td>Code</td>
+				<td>Code</td>
+			</tr>
+			<tr>
+				<td class="row-title">Item 2</td>
+				<td>Code</td>
+				<td>Code</td>
+				<td>Code</td>
+				<td>Code</td>
+				<td>Code</td>
+			</tr>
+			<tr>
+				<td class="row-title">Item 3</td>
+				<td>Code</td>
+				<td>Code</td>
+				<td>Code</td>
+				<td>Code</td>
+				<td>Code</td>
+			</tr>
+			<tr>
+				<td class="row-title">Item 4</td>
+				<td>Code</td>
+				<td>Code</td>
+				<td>Code</td>
+				<td>Code</td>
+				<td>Code</td>
+			</tr>
+			<tr>
+				<td class="row-title">Item 5</td>
+				<td>Code</td>
+				<td>Code</td>
+				<td>Code</td>
+				<td>Code</td>
+				<td>Code</td>
+			</tr>
+			<tr>
+				<td colspan="2">Short Footer</td>
+				<td colspan="4">Looooonnnnggg Footer</td>
+			</tr>
+		</table>
+		<!-- Requirement 2: 3 Item List -->
+		<h2>HW Assignment: HTML/CSS</h2>
+		<ul>
+			<li>Created By Chris Merrill</li>
+			<li>CS290: Web Development</li>
+			<li>Oregon State University</li>
+		</ul>
+		<!-- Requirement 3: div within a div -->
+		<div class="outer-content"><div class="inner-content">Random Page Divider</div></div>
+		<br>
+		<!-- Requirement 4: Forms -->
+		<form action="http://classes.engr.oregonstate.edu/eecs/winter2015/cs290-400/tools/class-content/form_tests/check_request.php" method="get">
+			<h1>GET Data Form</h1>
+			<p>Enter some text:</p>
+			<input type="text" name="text_input">
+			<br>
+			<p>Enter a number:</p>
+			<input type="number" name="numerical_input">
+			<br>
+			<p>Enter your password:<p>
+			<input type="password" name="password_input">
+			<br>
+			<br>
+			<p>Which of the following candies do you like best?</p>
+			<br>
+			<input type="radio" name="candy" value="Snickers">Snickers</input>
+			<br>
+			<input type="radio" name="candy" value="Skittles">Skittles</input>
+			<br>
+			<input type="radio" name="candy" value="Mentos">Mentos</input>
+			<br>
+			<br>
+			<input type="submit" value="Submit">
+		</form>
+		<form action="http://classes.engr.oregonstate.edu/eecs/winter2015/cs290-400/tools/class-content/form_tests/check_request.php" method="post">
+			<h1>POST Data Form</h1>
+			<p>Enter some text:</p>
+			<input type="text" name="text_input">
+			<br>
+			<p>Enter a number:</p>
+			<input type="number" name="numerical_input">
+			<br>
+			<p>Enter your password:<p>
+			<input type="password" name="password_input">
+			<br>
+			<br>
+			<p>Which of the following candies do you like best?</p>
+			<br>
+			<input type="radio" name="candy" value="Snickers">Snickers</input>
+			<br>
+			<input type="radio" name="candy" value="Skittles">Skittles</input>
+			<br>
+			<input type="radio" name="candy" value="Mentos">Mentos</input>
+			<br>
+			<br>
+			<input type="submit" value="Submit">
+		</form>
+	</body>
+</html>

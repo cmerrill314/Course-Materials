@@ -1,0 +1,51 @@
+<!--
+Christopher Merrill
+CS290
+Activity: Ajax Interactions
+
+This program consists of two forms that post asynchronously:
+
+The first retrieves weather data for a user-specified city using the OpenWeatherMap API.
+The second posts data to http://httpbin.org/post and then displays the response.
+
+See script.js and style.css for additional info
+-->,
+
+<!DOCTYPE html>
+<html>
+  <head>
+	<script src="script.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+  </head>
+  <body>
+	<div class="form">
+		<form>
+			<h1>Form 1: Search Weather Data by Zip or City</h1>
+			<p>Zip: <input type="number" name="zip_input" id="zip"></p>
+			<p>OR</p>
+			<p>City: <input type="text" name="city_input" id="city"></p>
+			<br>
+			<input type="submit" value="Submit" class="submit" id="submitForm1">
+		</form>
+		<h2>Results:</h2>
+		<ul>
+			<li>City: <span id="cityName"></span></li>
+			<li>Temperature: <span id="temp"></span></li>
+			<li>Pressure: <span id="pressure"></span></li>
+			<li>Humidity: <span id="humidity"></span></li>
+		</ul>
+	</div>
+	<div class="form">
+		<form>
+			<h1>Form 2: Submit Via POST</h1>
+			<br>
+			<p>Enter Text: <input type="text" name="text_input" id="text1"></p>
+			<br>
+			<input type="submit" value="Submit" class="submit" id="submitForm2">
+		</form>
+		<h2>Results:</h2>
+		<p>Response from server:</p>
+		<h2><span id="text2"></span></h2>
+	</div>
+  </body>
+</html>
