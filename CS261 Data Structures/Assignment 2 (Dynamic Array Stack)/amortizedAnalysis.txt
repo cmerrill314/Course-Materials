@@ -1,0 +1,47 @@
+Christopher Merrill
+CS261
+Program 2 Part 2
+Amortized Analysis
+
+ANSWER TO QUESTION 1: 
+
+The first 8 push operations would consist of 8 cost units.
+Then it would take 8 cost units to transfer the data to a new array with a capacity of 16.
+Then the next 8 push operations would consist of 8 cost units.
+Then it would take 16 cost units to transfer the data to a new array with a capacity of 32.
+The final 16 push operations would consist of 16 cost units.
+
+Total = 8 + 8 + 8 + 16 + 16 = 56 cost units.
+
+Using this resizing strategy, the Big O complexity of a push would be O(1)+. Meaning that 
+the average cost to add a new object is 1 cost unit, but this is not guarunteed if the 
+array must be resized (hence the +).
+
+ANSWER TO QUESTION 2: 
+
+The first 8 push operations would consist of 8 cost units.
+The 9th push operation would require 9 cost units, since the array must be resized.
+The 10th push operation would require 1 cost unit, and the array would now be full. 
+The 11th push operation would require 11 cost units, since the array must be resized.
+The 12th push operation would require 1 cost unit, and the array would now be full. 
+The 13th push operation would require 13 cost units, since the array must be resized.
+
+This process would be continued until we reach 32 push operations, and is summarized in 
+the summation below:
+
+Total = 8 + 9 + 1 + 11 + 1 + 13 + 1 + 15 + 1 + 17 + 1 + 19 + 1 + 21 + 1 + 23 + 1 + 25 + 1 
+		+ 27 + 1 + 29 + 1 + 31 + 1 = 260 cost units. 
+		
+Using this resizing strategy, the Big O complexity of a push would be O(n/2). The idea being that 
+one push is O(1), the next is O(n), the next is O(1), the next is O(n) and so on. Therefore the 
+average cost for a push is n/2. 
+
+ANSWER TO QUESTION 3:
+
+If you pushed until the array stack was full, pushed one more time to double its size, then 
+popped, the array would half its size immediately after doubling. You could then continue to 
+alternate between pop and push which would result in very poor performance (because the array
+would be resizing after each action). To improve the performance, the array should shrink at a
+value that is less than half the size of the array. Perhaps when the array is 1/4 full instead. 
+That will avoid uneccessary shrinking if the size of the array is hovering around a single value. 
+		
