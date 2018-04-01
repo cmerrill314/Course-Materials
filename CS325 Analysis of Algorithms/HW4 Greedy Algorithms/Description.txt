@@ -1,0 +1,41 @@
+*************************************************************************************
+
+Description:
+
+This greedy algorithm starts by selecting the activity with the latest start
+time. Then the only remaining subproblem is finding the activity with the 
+next latest start time who finishes before the first activity starts. This 
+process continues until the list of activities has been exhausted, at which 
+point the schedule has been determined. 
+
+*************************************************************************************
+
+Pseudocode:
+
+GREEDY-ACTIVITY-SELECTOR-WITH-LATEST-START-TIME (A[0...n])
+	n = A.length
+	S[0].push(A[0]) //Start with first activity in A
+	k = 0
+	
+	//Add activities who finish before the previously added activity starts
+	FOR m = 1 TO n
+		IF A[m].startTime <= S[k].finishTime
+			k++
+			S[k].push(A[m])
+	
+	RETURN S
+
+*Note: The above pseudocode assumes that A is presorted by start time in descending
+order. S[j] is a stack that represents the schedule. 
+
+*************************************************************************************
+
+Runtime Analysis:
+
+Since this algorithm assumes a presorted list of activities, it only has to examine
+each activity once. Which means for a list of n activities, the theoretical runtime 
+is:
+
+theta(n)
+
+*************************************************************************************
