@@ -1,0 +1,250 @@
+#!/bin/bash
+#---------------------------------------------------------------------------------------------------#
+# Christopher Merrill                                                                               #
+# CS344: Operating Systems                                                                          #
+# 7/5/2017                                                                                          #
+#                                                                                                   #
+# Description:                                                                                      #
+# Provided a file of of integers or using stdin, this program determines the                        #
+# average and median value of each row or column. The user specifies whether the calculations       #
+# should be done by row or column, as well as file.                                                 #
+#                                                                                                   #
+# Usage:                                                                                            #
+# stats {-rows|-cols} [file]                                                                        #
+#---------------------------------------------------------------------------------------------------#
+
+dataFilePath="datafile$$"      #Holds the file passed by the user
+workingFile="workingfile$$"    #Holds a copy of the file passed by the user that may be manipulated
+
+#Trap statement to kill temp files upon exit
+trap "rm -f $dataFilePath; rm -f $workingFile; exit" EXIT
+
+#---------------------------------------------------------------------------------------------------#
+#Determine if it was passed via stdin or a file and assure that the file is readable.               # 
+#---------------------------------------------------------------------------------------------------#
+if [ "$#" = "1" ]
+then
+	cat > "$dataFilePath"
+elif [ "$#" = "2" ]
+then
+	dataFilePath=$2
+	
+	#Check if the file is readable, if not display an error message and halt the program
+	if [[ !(-r $dataFilePath) ]]
+	then
+		#Display usage message to stderr
+		echo "./stats: cannot read $dataFilePath" >&2
+			
+		#Exit with a value of 1
+		exit 1
+	fi	
+#If no file was specified, display a usage message and exit
+else
+	#Display usage message to stderr
+	echo "./stats {-rows|-cols} [file]" >&2
+	
+	#Exit with a value of 1
+	exit 1
+fi
+
+#---------------------------------------------------------------------------------------------------#
+#Check for Bad Syntax when selecting rows or columns. If incorrect, display the usage message       #
+#and exit with a value of one.                                                                      #
+#---------------------------------------------------------------------------------------------------#
+if [[ $1 != -c* && $1 != -r* ]]
+then
+	#Display usage message to stderr
+	echo "./stats {-rows|-cols} [file]" >&2
+
+	#Exit with a value of 1
+	exit 1
+fi
+
+#Now that  validation is complete, copy the data file into the working file
+cat $dataFilePath > $workingFile
+
+#---------------------------------------------------------------------------------------------------#
+#Determine the number of rows and columns in the data file, to be used in the conversion of rows    #
+#to columns (if the user selects -cols). This also allows a check for blank data files.             #
+#---------------------------------------------------------------------------------------------------#
+rowCount=0
+colCount=0
+
+#Determine the row and column count of the provided file
+while read row
+do
+	#Loop through each value in the row to determine the number of columns
+	for i in $row
+	do
+		#Update the column count
+		colCount=`expr $colCount + 1`
+	done 
+	
+	#Update the row count
+	rowCount=`expr $rowCount + 1`
+	
+done < $workingFile
+
+#If there are zero rows, then the data file is blank. 
+#Exit the program before performing any calculations.
+if [[ $rowCount == 0 ]]
+then
+	#Exit with a value of 0
+	exit 0
+fi
+
+#At this point colCount contains the number of values in the entire file. 
+#Calculate the actual column count by dividing the current colCount by rowCount.
+colCount=`expr $colCount / $rowCount`
+
+#---------------------------------------------------------------------------------------------------#
+# If the user specified columns, convert the data file to list its columns as rows.                 #
+#---------------------------------------------------------------------------------------------------# 
+if [[ $1 == -c* ]]
+then	
+	newFilePath="newfile"
+	tempCol="tempcolfile"
+	tempRow="temprowfile"
+	curCol=1
+	
+	while [ $curCol -le $colCount ]
+	do
+		#Cut a column off of the data file and store it in tempCol
+		cut -f $curCol $workingFile > $tempCol
+		
+		#Transform the column into a row and store it in tempRow
+		cat $tempCol | tr '\n' '\t' > "$tempRow$$"
+		
+		#Add a newline character for better printing
+		echo >> "$tempRow$$"
+		
+		#Append the new row to newFilePath
+		cat "$tempRow$$" >> "$newFilePath$$"
+		
+		#Increment the current column
+		curCol=`expr $curCol + 1`
+		
+		#Remove tempCol and tempRow files
+		rm -f $tempCol
+		rm -f $tempRow$$	
+	done
+	
+	#Update workingFile to contain the converted file
+	cat $newFilePath$$ > $workingFile
+	
+	rm -f $newFilePath$$
+fi
+
+#---------------------------------------------------------------------------------------------------# 
+# Calculate the median and average for each row in the datafile, storing the results in avgResults  #
+# and medResults along the way.                                                                     #
+#---------------------------------------------------------------------------------------------------#
+rowVal=0
+rowCount=0
+avgResults=    #Empty array to hold the average results for each row
+medResults=    #Empty array to hold the median results for each row
+
+while read row
+do
+	sum=0      #The sum of all values in the row
+	count=0    #The number of columns in the row
+	median=0   #Median value for the row
+	vals=      #Empty array that will hold the row values
+	
+	#Loop through all of the values in the row, updating the sum and count on each iteration
+	for i in $row
+	do
+		#Update the sum
+		sum=`expr $sum + $i`
+		#Add the value to the vals array
+		vals[$count]=$i
+		#Update the count
+		count=`expr $count + 1`
+	done 
+	
+	#Store the rounded average in the avgResults array
+	avgResults[$rowVal]=$((( $sum + ( $count / 2 )) / $count ))
+	
+	#Sort the line values to aid in determineing the median. 
+	#The sorted array of values will be stored in sortedVals.
+	sortedVals=( 
+		$(for i in "${vals[@]}"
+		do 
+			echo "$i"
+		done | sort -n)
+	)
+
+	#Determine the Median:
+	#If the count is odd, simply return the middle value of sortedVals
+	if [[ $(( $count % 2 )) != 0 ]]
+	then
+		#The index of the middle value can be found by dividing the count by two
+		#This works because the division will always round down (it results in a .5 value)
+		index=$(( $count / 2 ))
+		medResults[$rowVal]=${sortedVals[$index]}
+	#If the count is even, return the higher of the two middle values
+	else
+		#The two middle values of an even-columned row should be at count/2 and count/2 -1
+		index1=$((( $count / 2 ) - 1 ))
+		index2=$(( $count / 2 ))
+		
+		#Determine which of the middle values is higher, and set the median accordingly
+		if [[ $index1 > $index2 ]]
+		then 
+			medResults[$rowVal]=${sortedVals[$index1]}
+		else
+			medResults[$rowVal]=${sortedVals[$index2]}
+		fi
+	fi
+	
+	#Increment the row value and count
+	rowVal=`expr $rowVal + 1`
+	rowCount=`expr $rowCount + 1`
+	
+done < $workingFile
+
+#---------------------------------------------------------------------------------------------------#
+# Display the results in the specified format (rows or columns)                                     #
+#---------------------------------------------------------------------------------------------------#
+if [[ $1 == -r* ]]
+then
+	#Display column titles for results
+	echo "Average Median"
+
+	#Display the results
+	rowVal=0
+	while [ $rowVal -lt $rowCount ]
+	do
+		echo "${avgResults[$rowVal]}	${medResults[$rowVal]}"
+		rowVal=`expr $rowVal + 1`
+	done
+elif [[ $1 == -c* ]]
+then
+	#Display average title:
+	echo "Averages:"
+
+	#Display the  average results
+	rowVal=0
+	while [ $rowVal -lt $rowCount ]
+	do
+		echo -n "${avgResults[$rowVal]}  "
+		rowVal=`expr $rowVal + 1`
+	done
+	
+	echo #Blank line
+	
+	#Display median title:
+	echo "Medians:"
+
+	#Display the median results
+	rowVal=0
+	while [ $rowVal -lt $rowCount ]
+	do
+		echo -n "${medResults[$rowVal]}  "
+		rowVal=`expr $rowVal + 1`
+	done
+	
+	echo #Blank line
+fi
+
+exit 0
